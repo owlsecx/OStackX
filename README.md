@@ -18,17 +18,20 @@
 
 ## 📌 Overview
 
-OpenStack service configuration security auditor (Keystone / Nova / Neutron / Glance / Cinder / Horizon)
+
+OStackX is an offline, read-only OpenStack service configuration security auditor covering Keystone, Nova, Neutron, Glance, Cinder and Horizon. It parses oslo.config INI files, a YAML subset and Horizon local_settings.py (via a safe AST reader, never exec), then applies OpenStack Security Guide checklists including file mode and ownership. Secrets are masked, each rule carries CWE and MITRE ATT&CK tags, and reports export to TXT, Markdown, JSON, CSV or SARIF.
 
 ---
 
 ## ✨ Features
 
-- Stdlib oslo.config INI parser, YAML subset parser and a safe AST reader for Horizon local_settings.py (no exec)
-- OpenStack Security Guide checklists — Identity, Compute, Networking, Image, Block Storage, Dashboard, oslo.policy and clouds.yaml; file mode / ownership (0640 root:<svc>)
-- Secrets masked everywhere; CWE + MITRE ATT&CK per rule
-- Export TXT / Markdown / JSON / CSV / SARIF 2.1.0
-- Self-test --demo, CI gates --fail-on / --min-severity
+
+- Stdlib oslo.config INI parser, YAML-subset parser and a safe AST reader for Horizon local_settings.py
+- OpenStack Security Guide checklists for Identity, Compute, Networking, Image, Block Storage and Dashboard
+- oslo.policy and clouds.yaml review plus file mode/ownership checks (0640 root:<svc>)
+- Secrets masked everywhere, with --show-secrets available when explicitly required
+- CWE + MITRE ATT&CK mapping per rule, with severity filtering and --fail-on CI gates
+- Export to TXT, Markdown, JSON, CSV and SARIF 2.1.0, plus a --demo self-test
 
 ---
 
@@ -41,8 +44,13 @@ OpenStack service configuration security auditor (Keystone / Nova / Neutron / Gl
 
 ## 🚀 Usage
 
+
 ```bash
-./OStackX
+./OStackX --scan -f sarif -o openstack.sarif
+./OStackX --keystone /etc/keystone/keystone.conf --nova /etc/nova/nova.conf
+./OStackX -r /mnt/image --fail-on high --json
+./OStackX --demo
+./OStackX --help
 ```
 
 ---
